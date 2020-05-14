@@ -24,6 +24,9 @@
 		5EF2F97C2054B6E400191409 /* ManifestPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5EF2F97E2054B6E400191409 /* ManifestPlist.strings */; };
 		5EF2F9AE2054BBF300191409 /* LiveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF2F9AD2054BBF300191409 /* LiveViewController.swift */; };
 		5EF2F9B72054E6FB00191409 /* Chapters in Copy Book Contents */ = {isa = PBXBuildFile; fileRef = 5EF2F9B62054E6F900191409 /* Chapters */; };
+		E208FE4C246DF04B00E58573 /* gameOver.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E208FE49246DF04A00E58573 /* gameOver.mp3 */; };
+		E208FE4D246DF04B00E58573 /* music.m4a in Resources */ = {isa = PBXBuildFile; fileRef = E208FE4A246DF04B00E58573 /* music.m4a */; };
+		E208FE4E246DF04B00E58573 /* bubble.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E208FE4B246DF04B00E58573 /* bubble.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -161,6 +164,9 @@
 		5EF2F9AB2054BBF300191409 /* libBookCore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBookCore.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5EF2F9AD2054BBF300191409 /* LiveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveViewController.swift; sourceTree = "<group>"; };
 		5EF2F9B62054E6F900191409 /* Chapters */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Chapters; sourceTree = "<group>"; };
+		E208FE49246DF04A00E58573 /* gameOver.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gameOver.mp3; sourceTree = "<group>"; };
+		E208FE4A246DF04B00E58573 /* music.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = music.m4a; sourceTree = "<group>"; };
+		E208FE4B246DF04B00E58573 /* bubble.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bubble.mp3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -376,6 +382,9 @@
 		5EF2F9792054B64800191409 /* PrivateResources */ = {
 			isa = PBXGroup;
 			children = (
+				E208FE4B246DF04B00E58573 /* bubble.mp3 */,
+				E208FE49246DF04A00E58573 /* gameOver.mp3 */,
+				E208FE4A246DF04B00E58573 /* music.m4a */,
 				5EF2F97E2054B6E400191409 /* ManifestPlist.strings */,
 				5E086DCC2051DDAE004D8D25 /* LiveView.storyboard */,
 				5E551EC42371FC3F00784365 /* Assets.xcassets */,
@@ -543,8 +552,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E208FE4C246DF04B00E58573 /* gameOver.mp3 in Resources */,
 				5EF2F97C2054B6E400191409 /* ManifestPlist.strings in Resources */,
+				E208FE4E246DF04B00E58573 /* bubble.mp3 in Resources */,
 				5E551EC52371FC3F00784365 /* Assets.xcassets in Resources */,
+				E208FE4D246DF04B00E58573 /* music.m4a in Resources */,
 				5E086DCA2051DDAE004D8D25 /* LiveView.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

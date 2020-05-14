@@ -28,8 +28,19 @@ class GameScene: SKScene {
     var operation: SKLabelNode = SKLabelNode(fontNamed: "Chalkduster")
     var surfForce: CGFloat = 4000.0
     var touching = false
+    var playerCategory: UInt32 = 1
+    var animalCategory: UInt32 = 2
+    var bubbleCategory: UInt32 = 4
+    var sandCategory: UInt32 = 8
+    var timerAnimal: Timer!
+    var timerBubble: Timer!
+    weak var gameController: GameSurfViewController?
+    
+    let bubbleSound = SKAction.playSoundFileNamed("bubble.mp3", waitForCompletion: false)
+    let gameOverSound = SKAction.playSoundFileNamed("gameOver.mp3", waitForCompletion: false)
     
     override func didMove(to view: SKView){
+        physicsWorld.contactDelegate = self
         self.backgroundColor = UIColor(red: 0.99, green: 0.87, blue: 0.78, alpha: 1.00)
         addSand()
         addSea()
@@ -48,6 +59,10 @@ class GameScene: SKScene {
         invisibleSand.physicsBody?.isDynamic = false
         invisibleSand.position = CGPoint(x: self.size.width/2, y: 4 * (sand.size.height/5))
         invisibleSand.zPosition = 2
+        
+        invisibleSand.physicsBody?.categoryBitMask = sandCategory
+        invisibleSand.physicsBody?.contactTestBitMask = playerCategory
+        invisibleSand.physicsBody?.collisionBitMask = playerCategory
         addChild(invisibleSand)
         
         let invisibleSky = SKNode()
@@ -55,6 +70,9 @@ class GameScene: SKScene {
         invisibleSky.physicsBody?.isDynamic = false
         invisibleSky.position = CGPoint(x: self.size.width/2, y: sand.size.height + 3 * (sea.size.height/4))
         invisibleSky.zPosition = 2
+        
+        
+
         addChild(invisibleSky)
     }
     
@@ -121,6 +139,10 @@ class GameScene: SKScene {
         player.physicsBody?.isDynamic = true
         player.physicsBody?.allowsRotation = true
         player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: surfForce))
+        
+        player.physicsBody!.categoryBitMask = playerCategory
+        player.physicsBody!.contactTestBitMask = animalCategory
+        player.physicsBody!.collisionBitMask = animalCategory
     }
     
     func generateMarineAnimal() {
@@ -144,8 +166,67 @@ class GameScene: SKScene {
         let removeAction = SKAction.removeFromParent()
         let sequenceAction = SKAction.sequence([moveAction,removeAction])
         
+        animal.physicsBody?.categoryBitMask = animalCategory
+        animal.physicsBody?.contactTestBitMask = playerCategory
+        animal.physicsBody?.collisionBitMask = playerCategory
+        
         animal.run(sequenceAction)
         addChild(animal)
+    }
+    
+    func generateBubbleNumber() {
+        let base = Float(sand.size.height)
+        let roof = Float(3 * (sea.size.height/4))
+        let initialPosition = CGFloat(Float.random(in: base...roof))
+        let bubbleIndex = Int.random(in: 1...9)
+        
+        let bubble = SKSpriteNode(imageNamed: "bubble\(bubbleIndex)")
+        let bubbleWidth = bubble.size.width
+        let bubbleHigth = bubble.size.height
+        
+        bubble.position = CGPoint(x: self.size.width + bubbleWidth/2, y: initialPosition)
+        bubble.zPosition = 3
+        bubble.physicsBody = SKPhysicsBody(circleOfRadius: bubble.size.width/1000)
+        bubble.physicsBody?.isDynamic = false
+        
+        let distance = size.width + bubbleWidth
+        let duration = Double(distance)/velocity
+        let moveAction = SKAction.moveBy(x: -distance, y: 0, duration: duration)
+        let removeAction = SKAction.removeFromParent()
+        let sequenceAction = SKAction.sequence([moveAction,removeAction])
+        
+        bubble.physicsBody?.categoryBitMask = bubbleCategory
+        bubble.physicsBody?.contactTestBitMask = playerCategory
+        bubble.physicsBody?.collisionBitMask = playerCategory
+
+        
+        bubble.run(sequenceAction)
+        addChild(bubble)
+
+    }
+    
+    func gameOver() {
+        timerAnimal.invalidate()
+        timerBubble.invalidate()
+        player.zRotation = 0
+        for node in self.children {
+            node.removeAllActions()
+        }
+        player.physicsBody?.isDynamic = false
+        gameFinished = true
+        gameStarted = false
+        
+        
+        Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { (timer) in
+            let gamerOverLabel = SKLabelNode(fontNamed: "Chalkduster")
+            gamerOverLabel.fontColor = UIColor(red: 0.93, green: 0.45, blue: 0.00, alpha: 1.00)
+            gamerOverLabel.fontSize = 60
+            gamerOverLabel.text = "Oops you were almost there, try again!"
+            gamerOverLabel.position = CGPoint(x: self.size.width/2, y: self.sand.size.height + self.sea.size.height/3)
+            gamerOverLabel.zPosition = 5
+            self.addChild(gamerOverLabel)
+            self.restart = true
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -158,16 +239,23 @@ class GameScene: SKScene {
                 player.physicsBody?.allowsRotation = true
                 player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: surfForce))
                 gameStarted = true
-                Timer.scheduledTimer(withTimeInterval: 5, repeats: true) { (timer) in
+                timerAnimal = Timer.scheduledTimer(withTimeInterval: 5, repeats: true) { (timer) in
                     self.generateMarineAnimal()
+                }
+                timerBubble = Timer.scheduledTimer(withTimeInterval: 7, repeats: true) { (timer) in
+                    self.generateBubbleNumber()
                 }
             } else {
                 player.physicsBody?.velocity = CGVector.zero
                 player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: surfForce))
             }
+        } else {
+            if restart {
+                restart = false
+                gameController?.presentScene()
+            }
         }
     }
-    
     
     override func update(_ currentTime: TimeInterval) {
         if gameStarted {
@@ -176,11 +264,37 @@ class GameScene: SKScene {
             player.run(rotateAction)
         }
     }
-    
-    
-    
-    
 }
+
+
+extension GameScene: SKPhysicsContactDelegate {
+    
+    func didBegin(_ contact: SKPhysicsContact) {
+        if gameStarted {
+            if contact.bodyA.categoryBitMask == animalCategory || contact.bodyB.categoryBitMask == animalCategory {
+                number1.text = "Tocou"
+            } else if contact.bodyA.categoryBitMask == bubbleCategory || contact.bodyB.categoryBitMask == bubbleCategory {
+                number1.text = "bubble"
+                run(bubbleSound)
+            } else if contact.bodyA.categoryBitMask == sandCategory || contact.bodyB.categoryBitMask == sandCategory {
+                number1.text = "sand"
+                run(gameOverSound)
+                gameOver()
+                
+                
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
 
 
 
@@ -188,6 +302,7 @@ class GameScene: SKScene {
 class GameSurfViewController: UIViewController {
     
     var stage: SKView!
+    //var backgroundMusic: AVaudioPlayer!
     override func viewDidLoad() {
         presentScene()
     }
@@ -196,10 +311,15 @@ class GameSurfViewController: UIViewController {
         let view = SKView()
         view.ignoresSiblingOrder = true
         let scene = GameScene(size: CGSize(width: 1536, height: 2048))
+        scene.gameController = self
         scene.scaleMode = SKSceneScaleMode.aspectFill
-        view.presentScene(scene)
+        view.presentScene(scene, transition: .doorsOpenVertical(withDuration: 0.5))
         self.view = view
     }
+//
+//    func playBackgroundMusic() {
+//
+//    }
     
 }
 
