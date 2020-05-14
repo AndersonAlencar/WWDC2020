@@ -15,7 +15,6 @@ import CoreGraphics
 
 class GameScene: SKScene {
     
-    
     var sand = SKSpriteNode(imageNamed: "sand")
     var sea = SKSpriteNode(imageNamed: "sea")
     var intro = SKSpriteNode(imageNamed: "intro")
@@ -38,16 +37,25 @@ class GameScene: SKScene {
         addPlayer()
         moveSea()
     }
-    
-    @objc func play(sender: UILongPressGestureRecognizer) {
-        player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: surfForce))
-    }
-    
 
     func addSand() {
         sand.position = CGPoint(x: self.size.width/2, y: sand.size.height/2)
         sand.zPosition = 0
         addChild(sand)
+        
+        let invisibleSand = SKNode()
+        invisibleSand.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: self.size.width, height: 1))
+        invisibleSand.physicsBody?.isDynamic = false
+        invisibleSand.position = CGPoint(x: self.size.width/2, y: 4 * (sand.size.height/5))
+        invisibleSand.zPosition = 2
+        addChild(invisibleSand)
+        
+        let invisibleSky = SKNode()
+        invisibleSky.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: self.size.width, height: 1))
+        invisibleSky.physicsBody?.isDynamic = false
+        invisibleSky.position = CGPoint(x: self.size.width/2, y: sand.size.height + 3 * (sea.size.height/4))
+        invisibleSky.zPosition = 2
+        addChild(invisibleSky)
     }
     
     func addSea() {
@@ -115,6 +123,31 @@ class GameScene: SKScene {
         player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: surfForce))
     }
     
+    func generateMarineAnimal() {
+        let base = Float(sand.size.height)
+        let roof = Float(3 * (sea.size.height/4))
+        let initialPosition = CGFloat(Float.random(in: base...roof))
+        let animalIndex = Int.random(in: 1...3)
+        
+        let animal = SKSpriteNode(imageNamed: "animal\(animalIndex)")
+        let animalWidth = animal.size.width
+        let animalHigth = animal.size.height
+        
+        animal.position = CGPoint(x: self.size.width + animalWidth/2, y: initialPosition)
+        animal.zPosition = 3
+        animal.physicsBody = SKPhysicsBody(circleOfRadius: animal.size.width/1000)
+        animal.physicsBody?.isDynamic = false
+        
+        let distance = size.width + animalWidth
+        let duration = Double(distance)/velocity
+        let moveAction = SKAction.moveBy(x: -distance, y: 0, duration: duration)
+        let removeAction = SKAction.removeFromParent()
+        let sequenceAction = SKAction.sequence([moveAction,removeAction])
+        
+        animal.run(sequenceAction)
+        addChild(animal)
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if !gameFinished {
             if !gameStarted {
@@ -125,6 +158,9 @@ class GameScene: SKScene {
                 player.physicsBody?.allowsRotation = true
                 player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: surfForce))
                 gameStarted = true
+                Timer.scheduledTimer(withTimeInterval: 5, repeats: true) { (timer) in
+                    self.generateMarineAnimal()
+                }
             } else {
                 player.physicsBody?.velocity = CGVector.zero
                 player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: surfForce))
@@ -140,6 +176,9 @@ class GameScene: SKScene {
             player.run(rotateAction)
         }
     }
+    
+    
+    
     
 }
 
