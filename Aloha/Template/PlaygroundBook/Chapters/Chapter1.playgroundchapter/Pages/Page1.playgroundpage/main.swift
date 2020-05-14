@@ -9,7 +9,9 @@
 import UIKit
 import SpriteKit
 import PlaygroundSupport
+import BookCore
 import CoreGraphics
+import AVFoundation
 
 
 
@@ -35,6 +37,8 @@ class GameScene: SKScene {
     var timerAnimal: Timer!
     var timerBubble: Timer!
     weak var gameController: GameSurfViewController?
+    
+    var manager = ModelManager()
     
     let bubbleSound = SKAction.playSoundFileNamed("bubble.mp3", waitForCompletion: false)
     let gameOverSound = SKAction.playSoundFileNamed("gameOver.mp3", waitForCompletion: false)
@@ -85,6 +89,12 @@ class GameScene: SKScene {
     func addIntro() {
         intro.position = CGPoint(x: self.size.width/2, y: sand.size.height + intro.size.height)
         intro.zPosition = 3
+        let introAction = SKAction.fadeAlpha(to: 0.5, duration: 0.7)
+        let introAction2 = SKAction.fadeAlpha(to: 1, duration: 0.7)
+        let sequenceAction = SKAction.sequence([introAction, introAction2])
+        let repeatAction = SKAction.repeatForever(sequenceAction)
+        intro.run(repeatAction)
+        
         addChild(intro)
     }
     
@@ -272,7 +282,7 @@ extension GameScene: SKPhysicsContactDelegate {
     func didBegin(_ contact: SKPhysicsContact) {
         if gameStarted {
             if contact.bodyA.categoryBitMask == animalCategory || contact.bodyB.categoryBitMask == animalCategory {
-                number1.text = "Tocou"
+                number1.text = manager.getBubble()
             } else if contact.bodyA.categoryBitMask == bubbleCategory || contact.bodyB.categoryBitMask == bubbleCategory {
                 number1.text = "bubble"
                 run(bubbleSound)
@@ -302,7 +312,8 @@ extension GameScene: SKPhysicsContactDelegate {
 class GameSurfViewController: UIViewController {
     
     var stage: SKView!
-    //var backgroundMusic: AVaudioPlayer!
+    var backgroundMusic: AVAudioPlayer!
+    var player: AVAudioPlayer?
     override func viewDidLoad() {
         presentScene()
     }
@@ -314,12 +325,30 @@ class GameSurfViewController: UIViewController {
         scene.gameController = self
         scene.scaleMode = SKSceneScaleMode.aspectFill
         view.presentScene(scene, transition: .doorsOpenVertical(withDuration: 0.5))
+        playSound()
         self.view = view
     }
-//
-//    func playBackgroundMusic() {
-//
-//    }
+    
+    
+    
+
+    func playSound() {
+        guard let url = Bundle.main.url(forResource: "music", withExtension: "m4a") else { return }
+
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
+            try AVAudioSession.sharedInstance().setActive(true)
+            player = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.mp3.rawValue)
+            guard let player = player else { return }
+            
+            player.volume = 0.03
+            player.numberOfLoops = -1
+            player.play()
+
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
     
 }
 

@@ -27,6 +27,7 @@
 		E208FE4C246DF04B00E58573 /* gameOver.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E208FE49246DF04A00E58573 /* gameOver.mp3 */; };
 		E208FE4D246DF04B00E58573 /* music.m4a in Resources */ = {isa = PBXBuildFile; fileRef = E208FE4A246DF04B00E58573 /* music.m4a */; };
 		E208FE4E246DF04B00E58573 /* bubble.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E208FE4B246DF04B00E58573 /* bubble.mp3 */; };
+		E257A6D9246DFC1D00709EE3 /* ModelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E257A6D8246DFC1D00709EE3 /* ModelManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -167,6 +168,7 @@
 		E208FE49246DF04A00E58573 /* gameOver.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gameOver.mp3; sourceTree = "<group>"; };
 		E208FE4A246DF04B00E58573 /* music.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = music.m4a; sourceTree = "<group>"; };
 		E208FE4B246DF04B00E58573 /* bubble.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bubble.mp3; sourceTree = "<group>"; };
+		E257A6D8246DFC1D00709EE3 /* ModelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -314,6 +316,7 @@
 			children = (
 				5EF2F9AD2054BBF300191409 /* LiveViewController.swift */,
 				5E3196F22061DEA40077BBD7 /* LiveViewSupport.swift */,
+				E257A6D8246DFC1D00709EE3 /* ModelManager.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -638,6 +641,7 @@
 			files = (
 				5E3196F32061DEA40077BBD7 /* LiveViewSupport.swift in Sources */,
 				5EF2F9AE2054BBF300191409 /* LiveViewController.swift in Sources */,
+				E257A6D9246DFC1D00709EE3 /* ModelManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
