@@ -28,6 +28,8 @@
 		E208FE4D246DF04B00E58573 /* music.m4a in Resources */ = {isa = PBXBuildFile; fileRef = E208FE4A246DF04B00E58573 /* music.m4a */; };
 		E208FE4E246DF04B00E58573 /* bubble.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E208FE4B246DF04B00E58573 /* bubble.mp3 */; };
 		E257A6D9246DFC1D00709EE3 /* ModelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E257A6D8246DFC1D00709EE3 /* ModelManager.swift */; };
+		E257A6DB246E027A00709EE3 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = E257A6DA246E027A00709EE3 /* GameScene.swift */; };
+		E257A6DD246E02D800709EE3 /* GameSurfViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E257A6DC246E02D800709EE3 /* GameSurfViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -169,6 +171,8 @@
 		E208FE4A246DF04B00E58573 /* music.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = music.m4a; sourceTree = "<group>"; };
 		E208FE4B246DF04B00E58573 /* bubble.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bubble.mp3; sourceTree = "<group>"; };
 		E257A6D8246DFC1D00709EE3 /* ModelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelManager.swift; sourceTree = "<group>"; };
+		E257A6DA246E027A00709EE3 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		E257A6DC246E02D800709EE3 /* GameSurfViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSurfViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -317,6 +321,8 @@
 				5EF2F9AD2054BBF300191409 /* LiveViewController.swift */,
 				5E3196F22061DEA40077BBD7 /* LiveViewSupport.swift */,
 				E257A6D8246DFC1D00709EE3 /* ModelManager.swift */,
+				E257A6DA246E027A00709EE3 /* GameScene.swift */,
+				E257A6DC246E02D800709EE3 /* GameSurfViewController.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -640,7 +646,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				5E3196F32061DEA40077BBD7 /* LiveViewSupport.swift in Sources */,
+				E257A6DD246E02D800709EE3 /* GameSurfViewController.swift in Sources */,
 				5EF2F9AE2054BBF300191409 /* LiveViewController.swift in Sources */,
+				E257A6DB246E027A00709EE3 /* GameScene.swift in Sources */,
 				E257A6D9246DFC1D00709EE3 /* ModelManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
