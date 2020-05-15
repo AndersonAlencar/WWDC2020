@@ -119,31 +119,50 @@ public class GameScene: SKScene {
         number1.fontSize = 150
         number2.fontSize = 150
         operation.fontSize = 150
-        
-        number1.text = ""
-        number2.text = ""
-        operation.text = ""
-        equal.text = ""
+        equal.fontSize = 150
 
         number1.zPosition = 5
         number2.zPosition = 5
         operation.zPosition = 5
+        equal.zPosition = 5
         
         number1.fontColor = .black
         number2.fontColor = .black
         operation.fontColor = .black
+        equal.fontColor = .black
 
         number1.alpha = 0.8
         number2.alpha = 0.8
         operation.alpha = 0.8
+        equal.alpha = 0.8
 
-        number1.position = CGPoint(x: sand.size.width/4, y: sand.size.height + sea.size.height - sea.size.height/5)
-        number2.position = CGPoint(x: sand.size.width/4 + 200, y: sand.size.height + sea.size.height - sea.size.height/5)
-        operation.position = CGPoint(x: sand.size.width/4 + 100, y: sand.size.height + sea.size.height - sea.size.height/5)
+        number1.position = CGPoint(x: sand.size.width/2 - 150, y: sand.size.height + sea.size.height - sea.size.height/5)
+        number2.position = CGPoint(x: sand.size.width/2 + 150, y: sand.size.height + sea.size.height - sea.size.height/5)
+        operation.position = CGPoint(x: sand.size.width/2, y: sand.size.height + sea.size.height - sea.size.height/5)
+        equal.position = CGPoint(x: sand.size.width/2 + 300, y: sand.size.height + sea.size.height - sea.size.height/5)
         
         addChild(number1)
         addChild(number2)
         addChild(operation)
+        addChild(equal)
+    }
+    
+    public func updateScoreLabels(number: Int) -> Bool{
+        if manager.number1 == 0{
+            number1.text = String(number)
+        } else if manager.number2 == 0 && manager.operation == 0 {
+            switch number {
+            case 1:
+                operation.text = "+"
+            default:
+                operation.text = "-"
+            }
+        } else {
+            number2.text = String(number)
+            equal.text = "="
+            return true
+        }
+        return false
     }
     
     public func setPlayerPhysicsBody() {
@@ -236,8 +255,7 @@ public class GameScene: SKScene {
         player.physicsBody?.isDynamic = false
         gameFinished = true
         gameStarted = false
-        
-        
+
         Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { (timer) in
             let gamerOverLabel = SKLabelNode(fontNamed: "Chalkduster")
             gamerOverLabel.fontColor = UIColor(red: 0.93, green: 0.45, blue: 0.00, alpha: 1.00)
@@ -248,6 +266,80 @@ public class GameScene: SKScene {
             self.addChild(gamerOverLabel)
             self.restart = true
         }
+    }
+    
+    public func hitAnimal() {
+        Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { (timer) in
+            let hitLabel = SKLabelNode(fontNamed: "Chalkduster")
+            hitLabel.fontColor = UIColor(red: 0.93, green: 0.45, blue: 0.00, alpha: 1.00)
+            hitLabel.fontSize = 60
+            hitLabel.text = "Oops! Don't run over marine animals!"
+            hitLabel.position = CGPoint(x: self.size.width/2, y: self.sand.size.height/2)
+            hitLabel.zPosition = 5
+            hitLabel.alpha = 0
+            
+            let introAction = SKAction.fadeAlpha(to: 1, duration: 1)
+            let introAction2 = SKAction.fadeAlpha(to: 0, duration: 3)
+            let sequenceAction = SKAction.sequence([introAction, introAction2])
+            hitLabel.run(sequenceAction)
+            self.addChild(hitLabel)
+        }
+    }
+    
+    public func chooseAnswer() {
+        var responses = Set<Int>()
+        var responseBubble1 = SKSpriteNode()
+        var responseBubble2 = SKSpriteNode()
+        var responseBubble3 = SKSpriteNode()
+        
+        switch manager.operation {
+        case 1:
+            responses.insert(manager.number1 + manager.number2)
+        default:
+            responses.insert(manager.number1 - manager.number2)
+        }
+        
+        while responses.count < 3 {
+            responses.insert(Int.random(in: 1...18))
+        }
+        
+        responseBubble1 = SKSpriteNode(imageNamed: "bubble\(responses.removeFirst())")
+        responseBubble2 = SKSpriteNode(imageNamed: "bubble\(responses.removeFirst())")
+        responseBubble3 = SKSpriteNode(imageNamed: "bubble\(responses.removeFirst())")
+        
+        
+        
+        responseBubble1.position = CGPoint(x: self.size.width + responseBubble1.size.width/2, y: sand.size.height + sea.size.height/9)
+        responseBubble1.zPosition = 3
+        responseBubble1.physicsBody = SKPhysicsBody(circleOfRadius: responseBubble1.size.width/1000)
+        responseBubble1.physicsBody?.isDynamic = false
+        
+        responseBubble2.position = CGPoint(x: self.size.width + responseBubble1.size.width/2, y: sand.size.height + sea.size.height/3)
+        responseBubble2.zPosition = 3
+        responseBubble2.physicsBody = SKPhysicsBody(circleOfRadius: responseBubble1.size.width/1000)
+        responseBubble2.physicsBody?.isDynamic = false
+        
+        responseBubble3.position = CGPoint(x: self.size.width + responseBubble1.size.width/2, y: sand.size.height + 5*(sea.size.height/9))
+        responseBubble3.zPosition = 3
+        responseBubble3.physicsBody = SKPhysicsBody(circleOfRadius: responseBubble1.size.width/1000)
+        responseBubble3.physicsBody?.isDynamic = false
+        
+        let distance = size.width + responseBubble1.size.width
+        let duration = Double(distance)/velocity
+        let moveAction = SKAction.moveBy(x: -distance, y: 0, duration: duration)
+        let removeAction = SKAction.removeFromParent()
+        let sequenceAction = SKAction.sequence([moveAction,removeAction])
+        
+        Timer.scheduledTimer(withTimeInterval: 4, repeats: false) { (timer) in
+            responseBubble1.run(sequenceAction)
+            responseBubble2.run(sequenceAction)
+            responseBubble3.run(sequenceAction)
+            
+            self.addChild(responseBubble1)
+            self.addChild(responseBubble2)
+            self.addChild(responseBubble3)
+        }
+        
     }
     
     override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -293,14 +385,18 @@ extension GameScene: SKPhysicsContactDelegate {
     public func didBegin(_ contact: SKPhysicsContact) {
         if gameStarted {
             if contact.bodyA.categoryBitMask == animalCategory || contact.bodyB.categoryBitMask == animalCategory {
-                number1.text = "Animal"
+                hitAnimal()
             } else if contact.bodyA.categoryBitMask == bubbleCategory || contact.bodyB.categoryBitMask == bubbleCategory {
-                number1.text = "bubble"
                 bubble.removeFromParent()
+                let needResponse = updateScoreLabels(number: indexBubble) // Muito importante que isso seja antes
                 manager.touchBubble(index: indexBubble)
+                if needResponse {
+                    timerAnimal.invalidate()
+                    timerBubble.invalidate()
+                    chooseAnswer()
+                }
                 run(bubbleSound)
             } else if contact.bodyA.categoryBitMask == sandCategory || contact.bodyB.categoryBitMask == sandCategory {
-                number1.text = "sand"
                 run(gameOverSound)
                 gameOver()
                 

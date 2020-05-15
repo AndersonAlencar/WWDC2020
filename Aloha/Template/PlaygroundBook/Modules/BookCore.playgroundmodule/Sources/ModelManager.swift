@@ -21,7 +21,7 @@ public class ModelManager {
                 number = Int.random(in: 1...9)
             }
             return number
-        } else if number1 != 0 && number2 == 0 {
+        } else if operation == 0 {
             number = Int.random(in: 1...2)
             return number
         } else {
@@ -30,17 +30,17 @@ public class ModelManager {
                 number = Int.random(in: 1...9)
             default:
                 while number >= number1 || number == 0 {
-                    number2 = Int.random(in: 1...9)
+                    number = Int.random(in: 1...9)
             }
         }
-            return number2
+            return number
         }
     }
     
     public func touchBubble(index: Int) {
         if number1 == 0 {
             number1 = index
-        } else if number1 != 0 && number2 == 0 {
+        } else if operation  ==  0 {
             operation = index
         } else {
             number2 = index
