@@ -28,14 +28,12 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse id metus no
  * Experiment:
   Que tal pegar uma onda?
  
-     1. Toque na tela para começar
-     2. Clique várias vezes na tela para fazer a Laura surfar
-     3. Pegue as bolhas para completar o desafio
-     4. Tenha cuidado, não atropele o animais marinhos
-     5. Não deixe a surfista descer demais ou ela pode cair da prancha
+     1. Toque na tela para começar 👈🏼
+     2. Clique várias vezes na tela para fazer a Laura surfar 👇🏼
+     3. Pegue as bolhas na onda para completar o desafio 🌊
+     4. Tenha cuidado, não atropele o animais marinhos 🐙 🐡
+     5. Não deixe a surfista descer demais ou ela pode cair da prancha 🏄🏽‍♀️
 
- 
- 
  [Proxima página](@next)
  */
 

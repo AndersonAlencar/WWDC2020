@@ -28,5 +28,7 @@
 	<string>Full</string>
 	<key>SupportsDarkMode</key>
 	<true/>
+	<key>ImageReference</key>
+	<string>logo.png</string>
 </dict>
 </plist>
