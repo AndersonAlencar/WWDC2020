@@ -37,6 +37,7 @@ public class GameScene: SKScene {
     public var timerBubble: Timer!
     public var bubble = SKSpriteNode()
     var indexBubble = 0
+    public var response = false
     public weak var gameController: GameSurfViewController?
     
     public var manager = ModelManager()
@@ -268,6 +269,27 @@ public class GameScene: SKScene {
         }
     }
     
+    public func win() {
+        player.zRotation = 0
+        for node in self.children {
+            node.removeAllActions()
+        }
+        player.physicsBody?.isDynamic = false
+        gameFinished = true
+        gameStarted = false
+        
+        Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { (timer) in
+            let winLabel = SKLabelNode(fontNamed: "Chalkduster")
+            winLabel.fontColor = UIColor(red: 0.93, green: 0.45, blue: 0.00, alpha: 1.00)
+            winLabel.fontSize = 90
+            winLabel.text = "Congratulations! You Win !"
+            winLabel.position = CGPoint(x: self.size.width/2, y: self.sand.size.height + self.sea.size.height/3)
+            winLabel.zPosition = 5
+            self.addChild(winLabel)
+            self.restart = true
+        }
+    }
+    
     public func hitAnimal() {
         Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { (timer) in
             let hitLabel = SKLabelNode(fontNamed: "Chalkduster")
@@ -290,7 +312,8 @@ public class GameScene: SKScene {
         var responses = Set<Int>()
         var responseBubble1 = SKSpriteNode()
         var responseBubble2 = SKSpriteNode()
-        var responseBubble3 = SKSpriteNode()
+        
+        var nameResponse = 0
         
         switch manager.operation {
         case 1:
@@ -299,30 +322,33 @@ public class GameScene: SKScene {
             responses.insert(manager.number1 - manager.number2)
         }
         
-        while responses.count < 3 {
+        while responses.count < 2 {
             responses.insert(Int.random(in: 1...18))
         }
         
-        responseBubble1 = SKSpriteNode(imageNamed: "bubble\(responses.removeFirst())")
-        responseBubble2 = SKSpriteNode(imageNamed: "bubble\(responses.removeFirst())")
-        responseBubble3 = SKSpriteNode(imageNamed: "bubble\(responses.removeFirst())")
+        nameResponse = responses.removeFirst()
+        responseBubble1 = SKSpriteNode(imageNamed: "bubble\(nameResponse)")
+        responseBubble1.name = String(nameResponse)
+        nameResponse = responses.removeFirst()
+        responseBubble2 = SKSpriteNode(imageNamed: "bubble\(nameResponse)")
+        responseBubble2.name = String(nameResponse)
         
         
-        
-        responseBubble1.position = CGPoint(x: self.size.width + responseBubble1.size.width/2, y: sand.size.height + sea.size.height/9)
+        responseBubble1.position = CGPoint(x: self.size.width + responseBubble1.size.width/2, y: sand.size.height + sea.size.height/6)
         responseBubble1.zPosition = 3
-        responseBubble1.physicsBody = SKPhysicsBody(circleOfRadius: responseBubble1.size.width/1000)
+        responseBubble1.physicsBody = SKPhysicsBody(circleOfRadius: responseBubble1.size.width/3000)
         responseBubble1.physicsBody?.isDynamic = false
+        responseBubble1.physicsBody?.categoryBitMask = bubbleCategory
+        responseBubble1.physicsBody?.contactTestBitMask = playerCategory
+        responseBubble1.physicsBody?.collisionBitMask = playerCategory
         
-        responseBubble2.position = CGPoint(x: self.size.width + responseBubble1.size.width/2, y: sand.size.height + sea.size.height/3)
+        responseBubble2.position = CGPoint(x: self.size.width + responseBubble1.size.width/2, y: sand.size.height + 5*(sea.size.height/8))
         responseBubble2.zPosition = 3
-        responseBubble2.physicsBody = SKPhysicsBody(circleOfRadius: responseBubble1.size.width/1000)
+        responseBubble2.physicsBody = SKPhysicsBody(circleOfRadius: responseBubble1.size.width/3000)
         responseBubble2.physicsBody?.isDynamic = false
-        
-        responseBubble3.position = CGPoint(x: self.size.width + responseBubble1.size.width/2, y: sand.size.height + 5*(sea.size.height/9))
-        responseBubble3.zPosition = 3
-        responseBubble3.physicsBody = SKPhysicsBody(circleOfRadius: responseBubble1.size.width/1000)
-        responseBubble3.physicsBody?.isDynamic = false
+        responseBubble2.physicsBody?.categoryBitMask = bubbleCategory
+        responseBubble2.physicsBody?.contactTestBitMask = playerCategory
+        responseBubble2.physicsBody?.collisionBitMask = playerCategory
         
         let distance = size.width + responseBubble1.size.width
         let duration = Double(distance)/velocity
@@ -330,16 +356,14 @@ public class GameScene: SKScene {
         let removeAction = SKAction.removeFromParent()
         let sequenceAction = SKAction.sequence([moveAction,removeAction])
         
+        response = true
         Timer.scheduledTimer(withTimeInterval: 4, repeats: false) { (timer) in
             responseBubble1.run(sequenceAction)
             responseBubble2.run(sequenceAction)
-            responseBubble3.run(sequenceAction)
             
             self.addChild(responseBubble1)
             self.addChild(responseBubble2)
-            self.addChild(responseBubble3)
         }
-        
     }
     
     override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -387,15 +411,49 @@ extension GameScene: SKPhysicsContactDelegate {
             if contact.bodyA.categoryBitMask == animalCategory || contact.bodyB.categoryBitMask == animalCategory {
                 hitAnimal()
             } else if contact.bodyA.categoryBitMask == bubbleCategory || contact.bodyB.categoryBitMask == bubbleCategory {
-                bubble.removeFromParent()
-                let needResponse = updateScoreLabels(number: indexBubble) // Muito importante que isso seja antes
-                manager.touchBubble(index: indexBubble)
-                if needResponse {
-                    timerAnimal.invalidate()
-                    timerBubble.invalidate()
-                    chooseAnswer()
+                if response {
+                    var bubbleBody = SKPhysicsBody()
+
+                    if (contact.bodyA.categoryBitMask > contact.bodyB.categoryBitMask) {
+                        bubbleBody = contact.bodyB;
+                    } else {
+                        bubbleBody = contact.bodyA;
+                    }
+
+                    let bubbleElement = bubbleBody.node!
+                    switch manager.operation {
+                    case 1:
+                        if bubbleElement.name == String(manager.number1 + manager.number2) {
+                            bubbleElement.removeFromParent()
+                            run(bubbleSound)
+                            win()
+                        } else {
+                            bubbleElement.removeFromParent()
+                            run(gameOverSound)
+                            gameOver()
+                        }
+                    default:
+                        if bubbleElement.name == String(manager.number1 - manager.number2) {
+                            run(bubbleSound)
+                            win()
+                        } else {
+                            bubbleElement.removeFromParent()
+                            run(gameOverSound)
+                            gameOver()
+                        }
+                    }
+                    
+                } else {
+                    bubble.removeFromParent()
+                    let needResponse = updateScoreLabels(number: indexBubble) // Muito importante que isso seja antes
+                    manager.touchBubble(index: indexBubble)
+                    if needResponse {
+                        timerAnimal.invalidate()
+                        timerBubble.invalidate()
+                        chooseAnswer()
+                    }
+                    run(bubbleSound)
                 }
-                run(bubbleSound)
             } else if contact.bodyA.categoryBitMask == sandCategory || contact.bodyB.categoryBitMask == sandCategory {
                 run(gameOverSound)
                 gameOver()
