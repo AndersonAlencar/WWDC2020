@@ -106,6 +106,50 @@ public class GameScene: SKScene {
         addChild(player)
     }
     
+    public func addFriends() {
+        let introAction = SKAction.fadeAlpha(to: 0.5, duration: 0.7)
+        let introAction2 = SKAction.fadeAlpha(to: 1, duration: 0.7)
+        let sequenceAction = SKAction.sequence([introAction, introAction2])
+        let repeatAction = SKAction.repeatForever(sequenceAction)
+        
+        let friend1 = SKSpriteNode(imageNamed: "polvoB")//mudar sprite
+        let friend2 = SKSpriteNode(imageNamed: "lulaB")//mudar sprite
+        let friend3 = SKSpriteNode(imageNamed: "peixeLeaoB")//mudar sprite
+        let friend4 = SKSpriteNode(imageNamed: "caranguejoB")//mudar sprite
+        
+        friend1.position = CGPoint(x: sand.size.width/8, y: sand.size.height/2)
+        friend2.position = CGPoint(x: 3*(sand.size.width/8), y: sand.size.height/2)
+        friend3.position = CGPoint(x: 5*(sand.size.width/8), y: sand.size.height/2)
+        friend4.position = CGPoint(x: 7*(sand.size.width/8), y: sand.size.height/2)
+
+        
+        friend1.name = "polvo"
+        friend2.name = "lula"
+        friend3.name = "peixeLeao"
+        friend4.name = "caranguejo"
+
+        friend1.isUserInteractionEnabled = false
+        friend2.isUserInteractionEnabled = false
+        friend3.isUserInteractionEnabled = false
+        
+        friend1.zPosition = 5
+        friend2.zPosition = 5
+        friend3.zPosition = 5
+        friend4.zPosition = 5
+        
+        friend1.run(repeatAction)
+        friend2.run(repeatAction)
+        friend3.run(repeatAction)
+        friend4.run(repeatAction)
+
+        
+        addChild(friend1)
+        addChild(friend2)
+        addChild(friend3)
+        addChild(friend4)
+
+    }
+    
     public func moveSea() {
         let duration = Double(sea.size.width/2)/velocity
         let moveSeaAction = SKAction.moveBy(x: -sea.size.width/2, y: 0, duration: duration)
@@ -277,16 +321,17 @@ public class GameScene: SKScene {
         gameFinished = true
         gameStarted = false
         
-        Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { (timer) in
-            let winLabel = SKLabelNode(fontNamed: "Chalkduster")
-            winLabel.fontColor = UIColor(red: 0.93, green: 0.45, blue: 0.00, alpha: 1.00)
-            winLabel.fontSize = 90
-            winLabel.text = "Congratulations! You Win !"
-            winLabel.position = CGPoint(x: self.size.width/2, y: self.sand.size.height + self.sea.size.height/3)
-            winLabel.zPosition = 5
-            self.addChild(winLabel)
-            self.restart = true
-        }
+        addFriends()
+//        Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { (timer) in
+//            let winLabel = SKLabelNode(fontNamed: "Chalkduster")
+//            winLabel.fontColor = UIColor(red: 0.93, green: 0.45, blue: 0.00, alpha: 1.00)
+//            winLabel.fontSize = 90
+//            winLabel.text = "Congratulations! You Win !"
+//            winLabel.position = CGPoint(x: self.size.width/2, y: self.sand.size.height + self.sea.size.height/3)
+//            winLabel.zPosition = 5
+//            self.addChild(winLabel)
+//            self.restart = true
+//        }
     }
     
     public func hitAnimal() {
@@ -366,6 +411,7 @@ public class GameScene: SKScene {
     }
     
     override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
         if !gameFinished {
             if !gameStarted {
                 intro.removeFromParent()
@@ -388,6 +434,22 @@ public class GameScene: SKScene {
         } else {
             if restart {
                 restart = false
+                gameController?.presentScene()
+            }
+        }
+    }
+    
+    public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for t in touches {
+            let node = self.atPoint(t.location(in :self))
+            if  node.name == "caranguejo" {
+                node.alpha = 0.3
+            } else if  node.name == "lula" {
+                node.alpha = 0.3
+            } else if node.name == "peixeLeao" {
+                node.alpha = 0.3
+            } else if node.name == "polvo" {
+                node.alpha = 0.3
                 gameController?.presentScene()
             }
         }
