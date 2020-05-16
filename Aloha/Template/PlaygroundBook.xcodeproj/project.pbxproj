@@ -31,6 +31,8 @@
 		E257A6DB246E027A00709EE3 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = E257A6DA246E027A00709EE3 /* GameScene.swift */; };
 		E257A6DD246E02D800709EE3 /* GameSurfViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E257A6DC246E02D800709EE3 /* GameSurfViewController.swift */; };
 		E257A6DF246EF75F00709EE3 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = E257A6DE246EF75F00709EE3 /* logo.png */; };
+		E257A6E1246F68DA00709EE3 /* GameJewelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E257A6E0246F68DA00709EE3 /* GameJewelViewController.swift */; };
+		E257A6E3246F69ED00709EE3 /* GameJeweScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = E257A6E2246F69ED00709EE3 /* GameJeweScene.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -175,6 +177,8 @@
 		E257A6DA246E027A00709EE3 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		E257A6DC246E02D800709EE3 /* GameSurfViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSurfViewController.swift; sourceTree = "<group>"; };
 		E257A6DE246EF75F00709EE3 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
+		E257A6E0246F68DA00709EE3 /* GameJewelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameJewelViewController.swift; sourceTree = "<group>"; };
+		E257A6E2246F69ED00709EE3 /* GameJeweScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameJeweScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -324,7 +328,9 @@
 				5E3196F22061DEA40077BBD7 /* LiveViewSupport.swift */,
 				E257A6D8246DFC1D00709EE3 /* ModelManager.swift */,
 				E257A6DA246E027A00709EE3 /* GameScene.swift */,
+				E257A6E2246F69ED00709EE3 /* GameJeweScene.swift */,
 				E257A6DC246E02D800709EE3 /* GameSurfViewController.swift */,
+				E257A6E0246F68DA00709EE3 /* GameJewelViewController.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -653,6 +659,8 @@
 				E257A6DD246E02D800709EE3 /* GameSurfViewController.swift in Sources */,
 				5EF2F9AE2054BBF300191409 /* LiveViewController.swift in Sources */,
 				E257A6DB246E027A00709EE3 /* GameScene.swift in Sources */,
+				E257A6E1246F68DA00709EE3 /* GameJewelViewController.swift in Sources */,
+				E257A6E3246F69ED00709EE3 /* GameJeweScene.swift in Sources */,
 				E257A6D9246DFC1D00709EE3 /* ModelManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

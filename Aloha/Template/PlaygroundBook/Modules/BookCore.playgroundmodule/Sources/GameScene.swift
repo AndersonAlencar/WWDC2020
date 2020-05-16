@@ -104,7 +104,6 @@ public class GameScene: SKScene {
         player.position = CGPoint(x: sand.size.width/4, y: sand.size.height + sea.size.height/2)
         player.zPosition = 4
         addChild(player)
-        
     }
     
     public func moveSea() {

@@ -23,6 +23,8 @@ PlaygroundPage.current.liveView = GameSurfViewController()
  
  # Na praia dentro de casa ☀️🏖
  
+ BUG POTENCIAL, CORRIGIR SE A PSSEO PASSAR SEM SELECIONAR UMA RESPOSTA NO FINAL
+ 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse id metus non nisl vulputate eleifend a in tellus. Ut eu est id tellus euismod mattis. Nunc at dapibus tellus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Integer fermentum metus in elementum tincidunt. Nullam facilisis velit eros, ac elementum tortor commodo in. Donec placerat mi et lacus convallis tristique.
  
  * Experiment:
