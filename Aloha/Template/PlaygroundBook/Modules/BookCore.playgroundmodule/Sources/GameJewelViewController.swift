@@ -20,7 +20,7 @@ public class GameJewelViewController: UIViewController {
         let view = SKView()
         view.ignoresSiblingOrder = true
         let scene = GameJeweScene(size: CGSize(width: 1536, height: 2048))
-        //scene.gameController = self
+        scene.gameController = self
         scene.scaleMode = SKSceneScaleMode.aspectFill
         view.presentScene(scene, transition: .doorsOpenVertical(withDuration: 0.5))
         self.view = view

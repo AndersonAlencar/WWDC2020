@@ -23,9 +23,12 @@ public class GameJeweScene: SKScene {
     public var surfForce: CGFloat = 4000.0
     public var gameFinished = false
     public var gameStarted = false
+    public var restart = false
     public var jewe1 = SKSpriteNode(imageNamed: "diamanteBase")
     public var jewe2 = SKSpriteNode(imageNamed: "rubyBase")
     public var jewe3 = SKSpriteNode(imageNamed: "esmeraldaBase")
+    public var timerJewels: Timer!
+    public var timerGuaranteeColor: Timer!
     public var playerCategory: UInt32 = 1
     public var diamondCategory: UInt32 = 2
     public var rubyCategory: UInt32 = 4
@@ -33,6 +36,12 @@ public class GameJeweScene: SKScene {
     public var sandCategory: UInt32 = 16
     public var jewelryOrder = [UInt32(2),UInt32(4),UInt32(8)]
     public var playerColors: Set = [2,1,3]
+    public var guaranteeColor = [1,2]
+    public var lives = 5
+    public var hearts = [SKSpriteNode]()
+    
+    public weak var gameController: GameJewelViewController?
+    
 
     
     public var labelDebug = SKLabelNode()
@@ -49,6 +58,7 @@ public class GameJeweScene: SKScene {
         addIntro()
         addPlayer()
         moveSea()
+        loadHearts()
         
         labelDebug.position = CGPoint(x: sand.size.width/2, y: sand.size.height/2)
         labelDebug.text = "Esperando..."
@@ -56,6 +66,16 @@ public class GameJeweScene: SKScene {
         labelDebug.fontSize = 40
         labelDebug.zPosition = 1
         addChild(labelDebug)
+    }
+    
+    public func loadHearts() {
+        for multiplier in 1...5 {
+            let heart = SKSpriteNode(imageNamed: "coracao")
+            heart.zPosition = 5
+            heart.position = CGPoint(x: CGFloat(multiplier) * (sand.size.width/8), y: sand.size.height + CGFloat(9)*(sea.size.height/10))
+            hearts.append(heart)
+            addChild(heart)
+        }
     }
     
     public func addCastleJewe() {
@@ -207,6 +227,77 @@ public class GameJeweScene: SKScene {
         
     }
     
+    public func generateGuaranteeColor() {
+        let typeJewe = jewelryOrder.first!
+        let base = Float(sand.size.height)
+        let roof = Float(3 * (sea.size.height/4))
+        let initialPosition = CGFloat(Float.random(in: base...roof))
+        var jewe = SKSpriteNode(imageNamed: "")
+        
+        switch typeJewe {
+        case UInt32(2):
+            //diamante
+            jewe = SKSpriteNode(imageNamed: "diamanteB\(player.name!)")
+            let jeweWidth = jewe.size.width
+            jewe.position = CGPoint(x: self.size.width + jeweWidth/2, y: initialPosition)
+            jewe.zPosition = 3
+            jewe.physicsBody = SKPhysicsBody(circleOfRadius: jewe.size.width/1000)
+            jewe.physicsBody?.isDynamic = false
+            jewe.physicsBody?.categoryBitMask = diamondCategory
+            jewe.name = "\(player.name!)"
+            let distance = size.width + jeweWidth
+            let duration = Double(distance)/velocity
+            let moveAction = SKAction.moveBy(x: -distance, y: 0, duration: duration)
+            let removeAction = SKAction.removeFromParent()
+            let sequenceAction = SKAction.sequence([moveAction,removeAction])
+            
+            jewe.physicsBody?.contactTestBitMask = playerCategory
+            jewe.physicsBody?.collisionBitMask = playerCategory
+            jewe.run(sequenceAction)
+            addChild(jewe)
+        case UInt32(4):
+            //ruby
+            jewe = SKSpriteNode(imageNamed: "rubyB\(player.name!)")
+            let jeweWidth = jewe.size.width
+            jewe.position = CGPoint(x: self.size.width + jeweWidth/2, y: initialPosition)
+            jewe.zPosition = 3
+            jewe.physicsBody = SKPhysicsBody(circleOfRadius: jewe.size.width/1000)
+            jewe.physicsBody?.isDynamic = false
+            jewe.physicsBody?.categoryBitMask = rubyCategory
+            jewe.name = "\(player.name!)"
+            let distance = size.width + jeweWidth
+            let duration = Double(distance)/velocity
+            let moveAction = SKAction.moveBy(x: -distance, y: 0, duration: duration)
+            let removeAction = SKAction.removeFromParent()
+            let sequenceAction = SKAction.sequence([moveAction,removeAction])
+            
+            jewe.physicsBody?.contactTestBitMask = playerCategory
+            jewe.physicsBody?.collisionBitMask = playerCategory
+            jewe.run(sequenceAction)
+            addChild(jewe)
+        default:
+            //esmeralda
+            jewe = SKSpriteNode(imageNamed: "esmeraldaB\(player.name!)")
+            let jeweWidth = jewe.size.width
+            jewe.position = CGPoint(x: self.size.width + jeweWidth/2, y: initialPosition)
+            jewe.zPosition = 3
+            jewe.physicsBody = SKPhysicsBody(circleOfRadius: jewe.size.width/1000)
+            jewe.physicsBody?.isDynamic = false
+            jewe.physicsBody?.categoryBitMask = emeraldCategory
+            jewe.name = "\(player.name!)"
+            let distance = size.width + jeweWidth
+            let duration = Double(distance)/velocity
+            let moveAction = SKAction.moveBy(x: -distance, y: 0, duration: duration)
+            let removeAction = SKAction.removeFromParent()
+            let sequenceAction = SKAction.sequence([moveAction,removeAction])
+            
+            jewe.physicsBody?.contactTestBitMask = playerCategory
+            jewe.physicsBody?.collisionBitMask = playerCategory
+            jewe.run(sequenceAction)
+            addChild(jewe)
+        }
+    }
+    
     public func checkValidCategory(category: UInt32) -> Bool {
         //fazer um isEmpty return falso
         if category == jewelryOrder.first! {
@@ -236,18 +327,61 @@ public class GameJeweScene: SKScene {
 
     
     public func gameOver() {
-        //esperando
-        labelDebug.text = "gameover..."
+        timerJewels.invalidate()
+        timerGuaranteeColor.invalidate()
+        player.zRotation = 0
+        for node in self.children {
+            node.removeAllActions()
+        }
+        player.physicsBody?.isDynamic = false
+        gameFinished = true
+        gameStarted = false
+
+        Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { (timer) in
+            let gamerOverLabel = SKLabelNode(fontNamed: "Chalkduster")
+            gamerOverLabel.fontColor = UIColor(red: 0.93, green: 0.45, blue: 0.00, alpha: 1.00)
+            gamerOverLabel.fontSize = 60
+            gamerOverLabel.text = "Oops you were almost there, try again!"
+            gamerOverLabel.position = CGPoint(x: self.size.width/2, y: self.sand.size.height + self.sea.size.height/3)
+            gamerOverLabel.zPosition = 5
+            self.addChild(gamerOverLabel)
+            self.restart = true
+        }
     }
     
     public func alertWrongJewel() {
-        //criar alerta na na areia, tentar reproduzir som
+        lives -= 1
+        
+        labelDebug.text = "joia errada"
     }
     
     public func changePlayerColor() {
         let color = playerColors.removeFirst()
         player.texture = SKTexture(imageNamed: "player\(color)")
         player.name = String(color)
+    }
+    
+    public func win() {
+        timerGuaranteeColor.invalidate()
+        timerJewels.invalidate()
+        player.zRotation = 0
+        for node in self.children {
+            node.removeAllActions()
+        }
+        player.physicsBody?.isDynamic = false
+        gameFinished = true
+        gameStarted = false
+        
+        Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { (timer) in
+            let winLabel = SKLabelNode(fontNamed: "Chalkduster")
+            winLabel.fontColor = UIColor(red: 0.93, green: 0.45, blue: 0.00, alpha: 1.00)
+            winLabel.fontSize = 90
+            winLabel.text = "Congratulations! You Win !"
+            winLabel.position = CGPoint(x: self.size.width/2, y: self.sand.size.height + self.sea.size.height/3)
+            winLabel.zPosition = 5
+            self.addChild(winLabel)
+            self.restart = true
+        }
     }
     
     public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -261,12 +395,20 @@ public class GameJeweScene: SKScene {
                 player.physicsBody?.allowsRotation = true
                 player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: surfForce))
                 gameStarted = true
-                Timer.scheduledTimer(withTimeInterval: 7, repeats: true) { (timer) in
+                timerJewels = Timer.scheduledTimer(withTimeInterval: 3, repeats: true) { (timer) in
                     self.generateJewels()
+                }
+                timerGuaranteeColor = Timer.scheduledTimer(withTimeInterval: 10, repeats: true) { (timer) in
+                    self.generateGuaranteeColor()
                 }
             } else {
                 player.physicsBody?.velocity = CGVector.zero
                 player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: surfForce))
+            }
+        } else {
+            if restart {
+                restart = false
+                gameController?.presentScene()
             }
         }
     }
@@ -289,29 +431,80 @@ extension  GameJeweScene: SKPhysicsContactDelegate {
             gameOver()
         }
         else if contact.bodyA.categoryBitMask == diamondCategory || contact.bodyB.categoryBitMask == diamondCategory {
-            labelDebug.text = "t1"
+            var colisionJewel = SKNode()
+            var player = SKNode()
+            if (contact.bodyA.categoryBitMask > contact.bodyB.categoryBitMask) {
+                colisionJewel = contact.bodyB.node!;
+                player = contact.bodyA.node!;
+
+            } else {
+                colisionJewel = contact.bodyA.node!;
+                player = contact.bodyB.node!;
+
+            }
             if checkValidCategory(category: diamondCategory) {
-                labelDebug.text = "t2"
-                var colisionJewel = SKNode()
-                var player = SKNode()
-                if (contact.bodyA.categoryBitMask > contact.bodyB.categoryBitMask) {
-                    colisionJewel = contact.bodyB.node!;
-                    player = contact.bodyA.node!;
-
-                } else {
-                    colisionJewel = contact.bodyA.node!;
-                    player = contact.bodyB.node!;
-
-                }
-                
                 if matchName(player: player.name!, jewe: colisionJewel.name!) {
                     updateCastle(category: diamondCategory, name: colisionJewel.name!)
                     changePlayerColor()
                 }
-                
+                colisionJewel.removeFromParent()
+            } else {
+                alertWrongJewel()
+                colisionJewel.removeFromParent()
             }
-            alertWrongJewel()
+            
         }
+        else if contact.bodyA.categoryBitMask == rubyCategory || contact.bodyB.categoryBitMask == rubyCategory {
+            var colisionJewel = SKNode()
+            var player = SKNode()
+            if (contact.bodyA.categoryBitMask > contact.bodyB.categoryBitMask) {
+                colisionJewel = contact.bodyB.node!;
+                player = contact.bodyA.node!;
+
+            } else {
+                colisionJewel = contact.bodyA.node!;
+                player = contact.bodyB.node!;
+
+            }
+            if checkValidCategory(category: rubyCategory) {
+                
+                if matchName(player: player.name!, jewe: colisionJewel.name!) {
+                    updateCastle(category: rubyCategory, name: colisionJewel.name!)
+                    changePlayerColor()
+                    colisionJewel.removeFromParent()
+                }
+            } else {
+                alertWrongJewel()
+                colisionJewel.removeFromParent()
+            }
+        }
+
+        else if contact.bodyA.categoryBitMask == emeraldCategory || contact.bodyB.categoryBitMask == emeraldCategory {
+            var colisionJewel = SKNode()
+            var player = SKNode()
+            if (contact.bodyA.categoryBitMask > contact.bodyB.categoryBitMask) {
+                colisionJewel = contact.bodyB.node!;
+                player = contact.bodyA.node!;
+
+            } else {
+                colisionJewel = contact.bodyA.node!;
+                player = contact.bodyB.node!;
+
+            }
+            
+            if checkValidCategory(category: emeraldCategory) {
+                if matchName(player: player.name!, jewe: colisionJewel.name!) {
+                    //updateCastle(category: emeraldCategory, name: colisionJewel.name!)
+                    jewe3.texture = SKTexture(imageNamed: "esmeralda\(colisionJewel.name!)")
+                    colisionJewel.removeFromParent()
+                    win()
+                }
+            } else {
+                alertWrongJewel()
+                colisionJewel.removeFromParent()
+            }
+        }
+        
     }
     
 }
