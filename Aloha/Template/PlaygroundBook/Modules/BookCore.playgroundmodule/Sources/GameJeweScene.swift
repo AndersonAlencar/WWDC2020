@@ -27,6 +27,9 @@ public class GameJeweScene: SKScene {
     public var jewe1 = SKSpriteNode(imageNamed: "diamanteBase")
     public var jewe2 = SKSpriteNode(imageNamed: "rubyBase")
     public var jewe3 = SKSpriteNode(imageNamed: "esmeraldaBase")
+    public var jeweOC1 = SKSpriteNode(imageNamed: "diamanteOC")
+    public var jeweOC2 = SKSpriteNode(imageNamed: "rubyOC")
+    public var jeweOC3 = SKSpriteNode(imageNamed: "esmeraldaOC")
     public var timerJewels: Timer!
     public var timerGuaranteeColor: Timer!
     public var playerCategory: UInt32 = 1
@@ -40,14 +43,11 @@ public class GameJeweScene: SKScene {
     public var lives = 5
     public var hearts = [SKSpriteNode]()
     
+    public let jewelSound = SKAction.playSoundFileNamed("bubble.mp3", waitForCompletion: false)
+    public let gameOverSound = SKAction.playSoundFileNamed("gameOver.mp3", waitForCompletion: false)
+    
+    
     public weak var gameController: GameJewelViewController?
-    
-
-    
-    public var labelDebug = SKLabelNode()
-    
-    
-    
     
     override public func didMove(to view: SKView){
         physicsWorld.contactDelegate = self
@@ -59,13 +59,29 @@ public class GameJeweScene: SKScene {
         addPlayer()
         moveSea()
         loadHearts()
+        addJewelsOC()
+    }
+    
+    public func addJewelsOC() {
+        jeweOC1.position = CGPoint(x: sand.size.width/8, y: 4*(sand.size.height/5))
+        jeweOC1.zPosition = 4
+        addChild(jeweOC1)
         
-        labelDebug.position = CGPoint(x: sand.size.width/2, y: sand.size.height/2)
-        labelDebug.text = "Esperando..."
-        labelDebug.fontColor = .black
-        labelDebug.fontSize = 40
-        labelDebug.zPosition = 1
-        addChild(labelDebug)
+        jeweOC2.position = CGPoint(x: sand.size.width/8 + 250, y: 4*(sand.size.height/5))
+        jeweOC2.zPosition = 4
+        addChild(jeweOC2)
+        
+        jeweOC3.position = CGPoint(x: sand.size.width/8 + 500, y: 4*(sand.size.height/5))
+        jeweOC3.zPosition = 4
+        addChild(jeweOC3)
+    }
+    
+    public func animateJewel(jewel: SKSpriteNode) {
+        let introAction = SKAction.fadeAlpha(to: 0.5, duration: 0.7)
+        let introAction2 = SKAction.fadeAlpha(to: 1, duration: 0.7)
+        let sequenceAction = SKAction.sequence([introAction, introAction2])
+        let repeatAction = SKAction.repeatForever(sequenceAction)
+        jewel.run(repeatAction)
     }
     
     public func loadHearts() {
@@ -154,7 +170,7 @@ public class GameJeweScene: SKScene {
     
     public func generateJewels() {
         
-        let randomJeweIndex = Int.random(in: 1...3) //responsável pela cor
+        let randomJeweIndex = Int.random(in: 1...3)
         let randomTypeJewe = Int.random(in: 1...3)
         let base = Float(sand.size.height)
         let roof = Float(3 * (sea.size.height/4))
@@ -299,7 +315,6 @@ public class GameJeweScene: SKScene {
     }
     
     public func checkValidCategory(category: UInt32) -> Bool {
-        //fazer um isEmpty return falso
         if category == jewelryOrder.first! {
             return true
         }
@@ -350,9 +365,16 @@ public class GameJeweScene: SKScene {
     }
     
     public func alertWrongJewel() {
+        run(gameOverSound)
         lives -= 1
-        
-        labelDebug.text = "joia errada"
+        for (index, heart) in hearts.enumerated() {
+            if index+1 > lives {
+                heart.texture = SKTexture(imageNamed: "coracao1")
+            }
+        }
+        if lives == 0 {
+            gameOver()
+        }
     }
     
     public func changePlayerColor() {
@@ -401,6 +423,7 @@ public class GameJeweScene: SKScene {
                 timerGuaranteeColor = Timer.scheduledTimer(withTimeInterval: 10, repeats: true) { (timer) in
                     self.generateGuaranteeColor()
                 }
+                animateJewel(jewel: jeweOC1)
             } else {
                 player.physicsBody?.velocity = CGVector.zero
                 player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: surfForce))
@@ -427,7 +450,7 @@ extension  GameJeweScene: SKPhysicsContactDelegate {
     
     public func didBegin(_ contact: SKPhysicsContact) {
         if contact.bodyA.categoryBitMask == sandCategory || contact.bodyB.categoryBitMask == sandCategory {
-            //run(gameooversoound)
+            run(gameOverSound)
             gameOver()
         }
         else if contact.bodyA.categoryBitMask == diamondCategory || contact.bodyB.categoryBitMask == diamondCategory {
@@ -442,12 +465,22 @@ extension  GameJeweScene: SKPhysicsContactDelegate {
                 player = contact.bodyB.node!;
 
             }
+            
             if checkValidCategory(category: diamondCategory) {
                 if matchName(player: player.name!, jewe: colisionJewel.name!) {
                     updateCastle(category: diamondCategory, name: colisionJewel.name!)
                     changePlayerColor()
+                    run(jewelSound)
+                    colisionJewel.removeFromParent()
+                    jeweOC1.removeAllActions()
+                    jeweOC1.texture = SKTexture(imageNamed: "diamanteB\(colisionJewel.name!)")
+                    jeweOC1.alpha = 1
+                    animateJewel(jewel: jeweOC2)
+                } else {
+                    alertWrongJewel()
+                    colisionJewel.removeFromParent()
                 }
-                colisionJewel.removeFromParent()
+                
             } else {
                 alertWrongJewel()
                 colisionJewel.removeFromParent()
@@ -466,13 +499,22 @@ extension  GameJeweScene: SKPhysicsContactDelegate {
                 player = contact.bodyB.node!;
 
             }
+
             if checkValidCategory(category: rubyCategory) {
-                
                 if matchName(player: player.name!, jewe: colisionJewel.name!) {
                     updateCastle(category: rubyCategory, name: colisionJewel.name!)
                     changePlayerColor()
                     colisionJewel.removeFromParent()
+                    run(jewelSound)
+                    jeweOC2.removeAllActions()
+                    jeweOC2.texture = SKTexture(imageNamed: "rubyB\(colisionJewel.name!)")
+                    jeweOC2.alpha = 1
+                    animateJewel(jewel: jeweOC3)
+                } else {
+                    alertWrongJewel()
+                    colisionJewel.removeFromParent()
                 }
+                
             } else {
                 alertWrongJewel()
                 colisionJewel.removeFromParent()
@@ -497,7 +539,14 @@ extension  GameJeweScene: SKPhysicsContactDelegate {
                     //updateCastle(category: emeraldCategory, name: colisionJewel.name!)
                     jewe3.texture = SKTexture(imageNamed: "esmeralda\(colisionJewel.name!)")
                     colisionJewel.removeFromParent()
+                    run(jewelSound)
+                    jeweOC3.removeAllActions()
+                    jeweOC3.texture = SKTexture(imageNamed: "esmeraldaB\(colisionJewel.name!)")
+                    jeweOC3.alpha = 1
                     win()
+                } else {
+                    alertWrongJewel()
+                    colisionJewel.removeFromParent()
                 }
             } else {
                 alertWrongJewel()

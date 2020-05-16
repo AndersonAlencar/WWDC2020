@@ -19,14 +19,14 @@ PlaygroundPage.current.liveView = GameJewelViewController()
 
 /*: Some Text
  
- # Na praia dentro de casa ☀️🏖
- 
- BUG POTENCIAL, CORRIGIR SE A PSSEO PASSAR SEM SELECIONAR UMA RESPOSTA NO FINAL
+ # Ah Não ! A onde levou as Jóias ☀️🏖
+
+ Voce sabia que os polvos podem mudar de cor ?
  
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse id metus non nisl vulputate eleifend a in tellus. Ut eu est id tellus euismod mattis. Nunc at dapibus tellus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Integer fermentum metus in elementum tincidunt. Nullam facilisis velit eros, ac elementum tortor commodo in. Donec placerat mi et lacus convallis tristique.
  
  * Experiment:
-  Que tal pegar uma onda?
+  Precisamos pegar as joias
  
      1. Toque na tela para começar 👈🏼
      2. Clique várias vezes na tela para fazer a Laura surfar 👇🏼
