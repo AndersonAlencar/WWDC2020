@@ -19,9 +19,7 @@ PlaygroundPage.current.liveView = GameSurfViewController()
  
  # The beach inside home / indoors ! ☀️🏖
  
- BUG POTENCIAL, CORRIGIR SE A PSSEO PASSAR SEM SELECIONAR UMA RESPOSTA NO FINAL
- 
-Laura is learning to surf with her friends and was invited to a party by her octopus friend, the whole marine kingdom will be there and it will be a lot of fun if we catch a wave to get there. But first, you need to complete a challenge, when you get there, you will have the opportunity to meet them all! . Are you ready ?
+Laura is learning to surf with her friends and was invited to her friend's octopus party, the whole marine kingdom will be there and it will be a lot of fun if we catch a wave to get there. But first, you need to complete a math challenge, solve the equation by catching the bubbles, and you will have the opportunity to meet all the octopus friends! . Are you ready ?
  
  * Experiment:
   How about catching a wave?
@@ -31,6 +29,7 @@ Laura is learning to surf with her friends and was invited to a party by her oct
      3. Catch the bubbles on the wave to complete the challenge 🌊
      4. Be careful, don't run over sea animals, they are going to party too 🐙 🐡
      5. Don't let Laura get too low or she may fall off the board 🏄🏽‍♀️
+     6. After winning the challenge click on the octopus friends that will appear and meet them! 🐙🐡🐋
 
  [Save The Party](@next)
  */

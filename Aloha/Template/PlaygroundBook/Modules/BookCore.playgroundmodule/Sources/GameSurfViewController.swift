@@ -50,6 +50,10 @@ public class GameSurfViewController: UIViewController {
         player?.stop()
     }
     
+    public func lowVolume(){
+        player?.volume = 0.01
+    }
+    
     public func presentAnimal(name: String) {
         let controller = AnimalViewController()
         controller.animalName = name

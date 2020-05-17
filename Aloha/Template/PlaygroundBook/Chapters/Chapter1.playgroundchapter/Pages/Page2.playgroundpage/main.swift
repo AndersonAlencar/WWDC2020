@@ -18,8 +18,6 @@ PlaygroundPage.current.liveView = GameJewelViewController()
 /*: Some Text
  # Oh no ! The wave took the jewels from the castle 🐙 🏰 ♦️ 🔹
  
- Voce sabia que os polvos podem mudar de cor ?
- 
 Laura made it to the party, but a wave took the jewelry that decorated her castle. But we can help to recover the jewels, to have the coolest party ever. There are many jewels in the sea and in order to find the right jewel, our octopus friend will indicate the color of the jewel we should pick up. We can only pick up jewels with the same color as the octopus, the shape of the jewel you will have to rescue will be flashing, good luck!
  
  * Experiment:

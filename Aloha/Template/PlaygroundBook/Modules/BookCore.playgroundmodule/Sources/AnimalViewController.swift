@@ -7,6 +7,8 @@
 
 import UIKit
 import Foundation
+import AVFoundation
+
 
 public class AnimalViewController: UIViewController {
 
@@ -34,7 +36,7 @@ public class AnimalViewController: UIViewController {
     
     public lazy var returnButton:UIButton = {
         var button = UIButton()
-        button.setTitle("Voltar", for: .normal)
+        button.setTitle("Back", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .regular)
         button.layer.cornerRadius = 5
         button.backgroundColor = UIColor(red: 0.90, green: 0.76, blue: 0.50, alpha: 1.00)
@@ -44,6 +46,9 @@ public class AnimalViewController: UIViewController {
     }()
 
     public var animalName: String?
+    var utterance = AVSpeechUtterance()
+    var synthesizer = AVSpeechSynthesizer()
+
     
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -79,19 +84,32 @@ public class AnimalViewController: UIViewController {
     
     @objc public func back() {
         self.dismiss(animated: true, completion: nil)
+        synthesizer.stopSpeaking(at: .immediate)
     }
     
     public func animalDescription(name: String) -> String {
         switch name {
         case "caranguejo":
-            return "Caranguejo"
+            return "Did you know that the crab is about 180 million years old? Most of them can be found in the sea, but they can be found in fresh water, rocky caves or in mangroves. They love a mud!"
         case "polvo":
-            return "polvo safado"
+            return "Octopuses have 8 tentacles, with suction cups to hold very tightly on objects. They are very smart and they can change color did you know? They do this to escape predators and when they don't feel safe"
         case "lula":
-            return "lulinha"
+            return "The squid have 10 tentacles, just like the octopuses, some of them can change the color of the skin. They release powerful jets of water to escape quickly from their predators."
         default:
-            return "peixe leao"
+            return "Lionfish have many red stripes on their bodies, they are not very large but they have many spines to protect themselves, they live mainly in the Caribbean. Someday we can travel there to meet them"
         }
+    }
+    
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        speechAnimal()
+    }
+    
+    public func speechAnimal() {
+        utterance = AVSpeechUtterance(string: "\(self.animalDescription(name: "\(animalName!)"))")
+        utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
+        utterance.rate = 0.3
+        synthesizer.speak(utterance)
     }
     
 

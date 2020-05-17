@@ -344,6 +344,7 @@ public class GameScene: SKScene {
         gameFinished = true
         gameStarted = false
         
+        gameController?.lowVolume()
         addFriends()
 //        Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { (timer) in
 //            let winLabel = SKLabelNode(fontNamed: "Chalkduster")
@@ -539,7 +540,7 @@ extension GameScene: SKPhysicsContactDelegate {
                     if needResponse {
                         timerAnimal.invalidate()
                         timerBubble.invalidate()
-                        chooseAnswer()
+                        self.chooseAnswer()
                     }
                     run(bubbleSound)
                 }
