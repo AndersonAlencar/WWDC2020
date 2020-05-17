@@ -346,16 +346,16 @@ public class GameScene: SKScene {
         
         gameController?.lowVolume()
         addFriends()
-//        Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { (timer) in
-//            let winLabel = SKLabelNode(fontNamed: "Chalkduster")
-//            winLabel.fontColor = UIColor(red: 0.93, green: 0.45, blue: 0.00, alpha: 1.00)
-//            winLabel.fontSize = 90
-//            winLabel.text = "Congratulations! You Win !"
-//            winLabel.position = CGPoint(x: self.size.width/2, y: self.sand.size.height + self.sea.size.height/3)
-//            winLabel.zPosition = 5
-//            self.addChild(winLabel)
-//            self.restart = true
-//        }
+        Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { (timer) in
+            let winLabel = SKLabelNode(fontNamed: "Chalkduster")
+            winLabel.fontColor = UIColor(red: 0.93, green: 0.45, blue: 0.00, alpha: 1.00)
+            winLabel.fontSize = 90
+            winLabel.text = "Congratulations! You Win !"
+            winLabel.position = CGPoint(x: self.size.width/2, y: self.sand.size.height + self.sea.size.height/3)
+            winLabel.zPosition = 5
+            self.addChild(winLabel)
+            //self.restart = true
+        }
     }
     
     public func hitAnimal() {

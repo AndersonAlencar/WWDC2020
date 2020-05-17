@@ -28,6 +28,7 @@ public class AnimalViewController: UIViewController {
         descrition.text = self.animalDescription(name: "\(animalName!)")
         descrition.translatesAutoresizingMaskIntoConstraints = false
         descrition.numberOfLines = 0
+        descrition.textColor = .black
         descrition.font = UIFont.systemFont(ofSize: 40, weight: .regular)
         descrition.adjustsFontSizeToFitWidth = true
         descrition.textAlignment = .justified
