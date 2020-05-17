@@ -15,6 +15,7 @@ import AVFoundation
 
 public class GameScene: SKScene {
     
+    //Variables
     public var sand = SKSpriteNode(imageNamed: "sand")
     public var sea = SKSpriteNode(imageNamed: "sea")
     public var intro = SKSpriteNode(imageNamed: "intro")
@@ -25,6 +26,7 @@ public class GameScene: SKScene {
     public var restart = false
     public var number1: SKLabelNode = SKLabelNode(fontNamed: "Chalkduster")
     public var number2: SKLabelNode = SKLabelNode(fontNamed: "Chalkduster")
+    public var result: SKLabelNode = SKLabelNode(fontNamed: "Chalkduster")
     public var operation: SKLabelNode = SKLabelNode(fontNamed: "Chalkduster")
     public var equal: SKLabelNode = SKLabelNode(fontNamed: "Chalkduster")
     public var surfForce: CGFloat = 4000.0
@@ -39,12 +41,16 @@ public class GameScene: SKScene {
     var indexBubble = 0
     public var response = false
     public weak var gameController: GameSurfViewController?
-    
     public var manager = ModelManager()
+    
+    public var lives = 5
+    public var hearts = [SKSpriteNode]()
     
     public let bubbleSound = SKAction.playSoundFileNamed("bubble.mp3", waitForCompletion: false)
     public let gameOverSound = SKAction.playSoundFileNamed("gameOver.mp3", waitForCompletion: false)
     
+    
+    //Functions class
     override public func didMove(to view: SKView){
         physicsWorld.contactDelegate = self
         self.backgroundColor = UIColor(red: 0.99, green: 0.87, blue: 0.78, alpha: 1.00)
@@ -52,6 +58,7 @@ public class GameScene: SKScene {
         addSea()
         addIntro()
         addPlayer()
+        loadHearts()
         moveSea()
     }
 
@@ -107,8 +114,8 @@ public class GameScene: SKScene {
     }
     
     public func addFriends() {
-        let introAction = SKAction.fadeAlpha(to: 0.5, duration: 0.7)
-        let introAction2 = SKAction.fadeAlpha(to: 1, duration: 0.7)
+        let introAction = SKAction.fadeAlpha(to: 0.5, duration: 0.8)
+        let introAction2 = SKAction.fadeAlpha(to: 1, duration: 0.8)
         let sequenceAction = SKAction.sequence([introAction, introAction2])
         let repeatAction = SKAction.repeatForever(sequenceAction)
         
@@ -150,6 +157,16 @@ public class GameScene: SKScene {
 
     }
     
+    public func loadHearts() {
+        for multiplier in 1...5 {
+            let heart = SKSpriteNode(imageNamed: "coracao")
+            heart.zPosition = 5
+            heart.position = CGPoint(x: CGFloat(multiplier) * (sand.size.width/8), y: sand.size.height + CGFloat(9)*(sea.size.height/10))
+            hearts.append(heart)
+            addChild(heart)
+        }
+    }
+    
     public func moveSea() {
         let duration = Double(sea.size.width/2)/velocity
         let moveSeaAction = SKAction.moveBy(x: -sea.size.width/2, y: 0, duration: duration)
@@ -164,31 +181,37 @@ public class GameScene: SKScene {
         number2.fontSize = 150
         operation.fontSize = 150
         equal.fontSize = 150
+        result.fontSize = 150
 
         number1.zPosition = 5
         number2.zPosition = 5
         operation.zPosition = 5
         equal.zPosition = 5
+        result.zPosition = 5
         
         number1.fontColor = .black
         number2.fontColor = .black
         operation.fontColor = .black
         equal.fontColor = .black
+        result.fontColor = .black
 
         number1.alpha = 0.8
         number2.alpha = 0.8
         operation.alpha = 0.8
         equal.alpha = 0.8
+        result.alpha = 0.8
 
-        number1.position = CGPoint(x: sand.size.width/2 - 150, y: sand.size.height + sea.size.height - sea.size.height/5)
-        number2.position = CGPoint(x: sand.size.width/2 + 150, y: sand.size.height + sea.size.height - sea.size.height/5)
-        operation.position = CGPoint(x: sand.size.width/2, y: sand.size.height + sea.size.height - sea.size.height/5)
-        equal.position = CGPoint(x: sand.size.width/2 + 300, y: sand.size.height + sea.size.height - sea.size.height/5)
+        number1.position = CGPoint(x: sand.size.width/2 - 150, y: sand.size.height + sea.size.height - sea.size.height/4)
+        number2.position = CGPoint(x: sand.size.width/2 + 150, y: sand.size.height + sea.size.height - sea.size.height/4)
+        operation.position = CGPoint(x: sand.size.width/2, y: sand.size.height + sea.size.height - sea.size.height/4)
+        equal.position = CGPoint(x: sand.size.width/2 + 300, y: sand.size.height + sea.size.height - sea.size.height/4)
+        result.position = CGPoint(x: sand.size.width/2 + 450, y: sand.size.height + sea.size.height - sea.size.height/4)
         
         addChild(number1)
         addChild(number2)
         addChild(operation)
         addChild(equal)
+        addChild(result)
     }
     
     public func updateScoreLabels(number: Int) -> Bool{
@@ -335,20 +358,15 @@ public class GameScene: SKScene {
     }
     
     public func hitAnimal() {
-        Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { (timer) in
-            let hitLabel = SKLabelNode(fontNamed: "Chalkduster")
-            hitLabel.fontColor = UIColor(red: 0.93, green: 0.45, blue: 0.00, alpha: 1.00)
-            hitLabel.fontSize = 60
-            hitLabel.text = "Oops! Don't run over marine animals!"
-            hitLabel.position = CGPoint(x: self.size.width/2, y: self.sand.size.height/2)
-            hitLabel.zPosition = 5
-            hitLabel.alpha = 0
-            
-            let introAction = SKAction.fadeAlpha(to: 1, duration: 1)
-            let introAction2 = SKAction.fadeAlpha(to: 0, duration: 3)
-            let sequenceAction = SKAction.sequence([introAction, introAction2])
-            hitLabel.run(sequenceAction)
-            self.addChild(hitLabel)
+        run(gameOverSound)
+        lives -= 1
+        for (index, heart) in hearts.enumerated() {
+            if index+1 > lives {
+                heart.texture = SKTexture(imageNamed: "coracao1")
+            }
+        }
+        if lives == 0 {
+            gameOver()
         }
     }
     
@@ -470,6 +488,15 @@ extension GameScene: SKPhysicsContactDelegate {
     public func didBegin(_ contact: SKPhysicsContact) {
         if gameStarted {
             if contact.bodyA.categoryBitMask == animalCategory || contact.bodyB.categoryBitMask == animalCategory {
+                var animalBody = SKPhysicsBody()
+
+                if (contact.bodyA.categoryBitMask > contact.bodyB.categoryBitMask) {
+                    animalBody = contact.bodyB;
+                } else {
+                    animalBody = contact.bodyA;
+                }
+                animalBody.node?.removeFromParent()
+
                 hitAnimal()
             } else if contact.bodyA.categoryBitMask == bubbleCategory || contact.bodyB.categoryBitMask == bubbleCategory {
                 if response {
@@ -487,6 +514,7 @@ extension GameScene: SKPhysicsContactDelegate {
                         if bubbleElement.name == String(manager.number1 + manager.number2) {
                             bubbleElement.removeFromParent()
                             run(bubbleSound)
+                            result.text = "\(manager.number1 + manager.number2)"
                             win()
                         } else {
                             bubbleElement.removeFromParent()
@@ -496,6 +524,7 @@ extension GameScene: SKPhysicsContactDelegate {
                     default:
                         if bubbleElement.name == String(manager.number1 - manager.number2) {
                             run(bubbleSound)
+                            result.text = "\(manager.number1 + manager.number2)"
                             win()
                         } else {
                             bubbleElement.removeFromParent()
