@@ -15,12 +15,9 @@ import CoreGraphics
 import AVFoundation
 PlaygroundPage.current.liveView = GameJewelViewController()
 //#-end-hidden-code
-
-
 /*: Some Text
- 
  # Ah Não ! A onde levou as Jóias ☀️🏖
-
+ 
  Voce sabia que os polvos podem mudar de cor ?
  
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse id metus non nisl vulputate eleifend a in tellus. Ut eu est id tellus euismod mattis. Nunc at dapibus tellus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Integer fermentum metus in elementum tincidunt. Nullam facilisis velit eros, ac elementum tortor commodo in. Donec placerat mi et lacus convallis tristique.
