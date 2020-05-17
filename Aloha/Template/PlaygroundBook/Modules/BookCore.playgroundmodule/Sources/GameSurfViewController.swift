@@ -48,4 +48,11 @@ public class GameSurfViewController: UIViewController {
         }
     }
     
+    public func presentAnimal(name: String) {
+        let controller = AnimalViewController()
+        controller.animalName = name
+        controller.modalPresentationStyle  = .fullScreen
+        self.present(controller, animated: true, completion: nil)
+    }
+    
 }

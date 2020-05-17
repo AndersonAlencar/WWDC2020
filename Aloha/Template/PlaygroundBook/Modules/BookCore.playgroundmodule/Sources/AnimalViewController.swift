@@ -11,9 +11,10 @@ import Foundation
 public class AnimalViewController: UIViewController {
 
     
+    
     public lazy var imageView: UIImageView = {
         let animalImage = UIImageView()
-        animalImage.image = UIImage(named: "\(animalName!)")
+        animalImage.image = UIImage(named: "\(animalName!)Modal")
         animalImage.contentMode = .scaleAspectFit
         animalImage.translatesAutoresizingMaskIntoConstraints = false
         animalImage.clipsToBounds = true
@@ -78,6 +79,19 @@ public class AnimalViewController: UIViewController {
     
     @objc public func back() {
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    public func animalDescription(name: String) -> String {
+        switch name {
+        case "caranguejo":
+            return "Caranguejo"
+        case "polvo":
+            return "polvo safado"
+        case "lula":
+            return "lulinha"
+        default:
+            return "peixe leao"
+        }
     }
     
 

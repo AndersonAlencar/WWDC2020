@@ -461,14 +461,13 @@ public class GameScene: SKScene {
         for t in touches {
             let node = self.atPoint(t.location(in :self))
             if  node.name == "caranguejo" {
-                node.alpha = 0.3
+                gameController?.presentAnimal(name: node.name!)
             } else if  node.name == "lula" {
-                node.alpha = 0.3
+                gameController?.presentAnimal(name: node.name!)
             } else if node.name == "peixeLeao" {
-                node.alpha = 0.3
+                gameController?.presentAnimal(name: node.name!)
             } else if node.name == "polvo" {
-                node.alpha = 0.3
-                gameController?.presentScene()
+                gameController?.presentAnimal(name: node.name!)
             }
         }
     }
