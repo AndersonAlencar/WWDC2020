@@ -12,8 +12,6 @@ import SpriteKit
 
 public class GameSurfViewController: UIViewController {
     
-    public var stage: SKView!
-    public var backgroundMusic: AVAudioPlayer!
     public var player: AVAudioPlayer?
     override public func viewDidLoad() {
         presentScene()
@@ -46,6 +44,10 @@ public class GameSurfViewController: UIViewController {
         } catch let error {
             print(error.localizedDescription)
         }
+    }
+    
+    public func stopSound() {
+        player?.stop()
     }
     
     public func presentAnimal(name: String) {

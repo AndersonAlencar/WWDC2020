@@ -34,6 +34,7 @@
 		E257A6E1246F68DA00709EE3 /* GameJewelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E257A6E0246F68DA00709EE3 /* GameJewelViewController.swift */; };
 		E257A6E3246F69ED00709EE3 /* GameJeweScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = E257A6E2246F69ED00709EE3 /* GameJeweScene.swift */; };
 		E2CB112B2470DD7600DE9EC5 /* AnimalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CB112A2470DD7600DE9EC5 /* AnimalViewController.swift */; };
+		E2CB112F24716F6B00DE9EC5 /* Introduction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CB112E24716F6B00DE9EC5 /* Introduction.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -181,6 +182,7 @@
 		E257A6E0246F68DA00709EE3 /* GameJewelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameJewelViewController.swift; sourceTree = "<group>"; };
 		E257A6E2246F69ED00709EE3 /* GameJeweScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameJeweScene.swift; sourceTree = "<group>"; };
 		E2CB112A2470DD7600DE9EC5 /* AnimalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimalViewController.swift; sourceTree = "<group>"; };
+		E2CB112E24716F6B00DE9EC5 /* Introduction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Introduction.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -334,6 +336,7 @@
 				E257A6DC246E02D800709EE3 /* GameSurfViewController.swift */,
 				E257A6E0246F68DA00709EE3 /* GameJewelViewController.swift */,
 				E2CB112A2470DD7600DE9EC5 /* AnimalViewController.swift */,
+				E2CB112E24716F6B00DE9EC5 /* Introduction.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -659,6 +662,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5E3196F32061DEA40077BBD7 /* LiveViewSupport.swift in Sources */,
+				E2CB112F24716F6B00DE9EC5 /* Introduction.swift in Sources */,
 				E257A6DD246E02D800709EE3 /* GameSurfViewController.swift in Sources */,
 				5EF2F9AE2054BBF300191409 /* LiveViewController.swift in Sources */,
 				E257A6DB246E027A00709EE3 /* GameScene.swift in Sources */,

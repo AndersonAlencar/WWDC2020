@@ -23,7 +23,7 @@ public class AnimalViewController: UIViewController {
     
     public lazy var animalDescription: UILabel = {
         let descrition = UILabel()
-        descrition.text = "\(animalName!)"
+        descrition.text = self.animalDescription(name: "\(animalName!)")
         descrition.translatesAutoresizingMaskIntoConstraints = false
         descrition.numberOfLines = 0
         descrition.font = UIFont.systemFont(ofSize: 40, weight: .regular)

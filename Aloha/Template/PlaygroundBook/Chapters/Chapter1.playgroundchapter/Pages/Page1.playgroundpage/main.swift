@@ -17,22 +17,22 @@ PlaygroundPage.current.liveView = GameSurfViewController()
 //#-end-hidden-code
 /*: Some Text
  
- # Na praia dentro de casa ☀️🏖
+ # The beach inside home / indoors ! ☀️🏖
  
  BUG POTENCIAL, CORRIGIR SE A PSSEO PASSAR SEM SELECIONAR UMA RESPOSTA NO FINAL
  
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse id metus non nisl vulputate eleifend a in tellus. Ut eu est id tellus euismod mattis. Nunc at dapibus tellus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Integer fermentum metus in elementum tincidunt. Nullam facilisis velit eros, ac elementum tortor commodo in. Donec placerat mi et lacus convallis tristique.
+Laura is learning to surf with her friends and was invited to a party by her octopus friend, the whole marine kingdom will be there and it will be a lot of fun if we catch a wave to get there. But first, you need to complete a challenge, when you get there, you will have the opportunity to meet them all! . Are you ready ?
  
  * Experiment:
-  Que tal pegar uma onda?
+  How about catching a wave?
  
-     1. Toque na tela para começar 👈🏼
-     2. Clique várias vezes na tela para fazer a Laura surfar 👇🏼
-     3. Pegue as bolhas na onda para completar o desafio 🌊
-     4. Tenha cuidado, não atropele o animais marinhos 🐙 🐡
-     5. Não deixe a surfista descer demais ou ela pode cair da prancha 🏄🏽‍♀️
+     1. Touch the screen to start 👈🏼
+     2. Keep tapping the screen to make Laura surf 👇🏼
+     3. Catch the bubbles on the wave to complete the challenge 🌊
+     4. Be careful, don't run over sea animals, they are going to party too 🐙 🐡
+     5. Don't let Laura get too low or she may fall off the board 🏄🏽‍♀️
 
- [Proxima página](@next)
+ [Save The Party](@next)
  */
 
 

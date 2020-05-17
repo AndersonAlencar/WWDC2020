@@ -8,28 +8,28 @@
 //#-end-hidden-code
 import UIKit
 import PlaygroundSupport
-
 /*: Some Text
  
- # Ah Não ! A onde levou as Jóias ☀️🏖
-
- Voce sabia que os polvos podem mudar de cor ?
+ # Aloha: ☀️ ⛱
+ Hello, my name is Anderson, I'm 22 years old and I'm a student at IFCE - Apple Developer Academy in Fortaleza - Brazil. I learned inside, how to change the world around me, through what moves and inspires me. Simple ideas when well executed can bring a smile in these difficult times. Through my work, I want to get to know cultures from around the world and produce solutions with personality that move and inspire people.
  
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse id metus non nisl vulputate eleifend a in tellus. Ut eu est id tellus euismod mattis. Nunc at dapibus tellus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Integer fermentum metus in elementum tincidunt. Nullam facilisis velit eros, ac elementum tortor commodo in. Donec placerat mi et lacus convallis tristique.
+ # Motivation: 👩‍👧‍👦 🏄🏾‍♂️
+![Playground icon](beach.png)
  
-  ![Playground icon](beach.png)
+ I love my family and one sport in particular, surfing. We have been in social isolation for 2 months and it has been difficult not to be able to practice what I love. But it's becoming even more difficult for my sister Laura, who is autistic, to deal with isolation. Thinking about having fun and educating all children, especially autistic children, who are experiencing difficulties today, I created this playground, making surfing an accessible sport for all of them.
+ 
+ # Credits: The images were vectorized and edited by me using the Afinnity Design software.
+ 
  * Experiment:
-  Precisamos pegar as joias
+    #Technologies
+    
+    1. Author Template PlaygroundBook
+    2. Affinity Design
  
-     1. Toque na tela para começar 👈🏼
-     2. Clique várias vezes na tela para fazer a Laura surfar 👇🏼
-     3. Pegue as bolhas na onda para completar o desafio 🌊
-     4. Tenha cuidado, não atropele o animais marinhos 🐙 🐡
-     5. Não deixe a surfista descer demais ou ela pode cair da prancha 🏄🏽‍♀️
-
- [Proxima página](@next)
+Links:
  
- 
- 
+ For more information, see [Swift Playgrounds](https://developer.apple.com/documentation/swift_playgrounds)
+ For more information, see [Creating and Running a Playground Book
+](https://developer.apple.com/documentation/swift_playgrounds/creating_and_running_a_playground_book)
 
  */

@@ -402,6 +402,7 @@ public class GameJeweScene: SKScene {
             winLabel.position = CGPoint(x: self.size.width/2, y: self.sand.size.height + self.sea.size.height/3)
             winLabel.zPosition = 5
             self.addChild(winLabel)
+            self.gameController?.stopSound()
             self.restart = true
         }
     }

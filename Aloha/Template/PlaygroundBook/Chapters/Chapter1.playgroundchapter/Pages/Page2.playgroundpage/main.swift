@@ -16,21 +16,21 @@ import AVFoundation
 PlaygroundPage.current.liveView = GameJewelViewController()
 //#-end-hidden-code
 /*: Some Text
- # Ah Não ! A onde levou as Jóias ☀️🏖
+ # Oh no ! The wave took the jewels from the castle 🐙 🏰 ♦️ 🔹
  
  Voce sabia que os polvos podem mudar de cor ?
  
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse id metus non nisl vulputate eleifend a in tellus. Ut eu est id tellus euismod mattis. Nunc at dapibus tellus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Integer fermentum metus in elementum tincidunt. Nullam facilisis velit eros, ac elementum tortor commodo in. Donec placerat mi et lacus convallis tristique.
+Laura made it to the party, but a wave took the jewelry that decorated her castle. But we can help to recover the jewels, to have the coolest party ever. There are many jewels in the sea and in order to find the right jewel, our octopus friend will indicate the color of the jewel we should pick up. We can only pick up jewels with the same color as the octopus, the shape of the jewel you will have to rescue will be flashing, good luck!
  
  * Experiment:
-  Precisamos pegar as joias
+  We need to rescue the jewels
  
-     1. Toque na tela para começar 👈🏼
-     2. Clique várias vezes na tela para fazer a Laura surfar 👇🏼
-     3. Pegue as bolhas na onda para completar o desafio 🌊
-     4. Tenha cuidado, não atropele o animais marinhos 🐙 🐡
-     5. Não deixe a surfista descer demais ou ela pode cair da prancha 🏄🏽‍♀️
+     1. Touch the screen to start 👈🏼
+     2. Keep tapping the screen to make Laura surf 👇🏼
+     3. Take the jewel of the same shape as the one that will be flashing on the screen 💎
+     4. The color of the jewel you should take, must be the same color as our octopus friend will indicate 🐙 
+     5. Don't let Laura get too low or she may fall off the board 🏄🏽‍♀️
 
- [Proxima página](@next)
+ [About Me](@next)
  */
 
